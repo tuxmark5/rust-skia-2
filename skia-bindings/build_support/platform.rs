@@ -16,6 +16,7 @@ mod generic;
 pub mod ios;
 pub mod linux;
 pub mod macos;
+pub mod mingw;
 mod windows;
 
 pub fn uses_freetype(config: &BuildConfiguration) -> bool {
@@ -73,6 +74,7 @@ fn details(target: &Target) -> &dyn PlatformDetails {
         (_, "linux", "android", _) | (_, "linux", "androideabi", _) => &android::Android,
         (_, "apple", "darwin", _) => &macos::MacOs,
         (_, "apple", "ios", _) => &ios::Ios,
+        (_, _, "windows", Some("gnu")) => &mingw::Mingw,
         (_, _, "windows", Some("msvc")) if host.is_windows() => &windows::Msvc,
         (_, _, "windows", _) => &windows::Generic,
         (_, "unknown", "linux", Some("musl")) => &alpine::Musl,

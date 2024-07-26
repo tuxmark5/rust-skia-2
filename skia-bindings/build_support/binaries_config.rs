@@ -100,14 +100,10 @@ impl BinariesConfiguration {
     }
 
     pub fn built_libraries(&self, include_bindings: bool) -> impl Iterator<Item = &str> {
-        self.ninja_built_libraries
-            .iter()
-            .chain(if include_bindings {
-                self.binding_libraries.iter()
-            } else {
-                [].iter()
-            })
-            .map(|x| x.as_str())
+        let a = if include_bindings { &*self.binding_libraries } else { &[] };
+        let a = a.iter();
+        let b = self.ninja_built_libraries.iter();
+        a.chain(b).map(|x| x.as_str())
     }
 
     /// Inform cargo that the library files of the given configuration are available and
